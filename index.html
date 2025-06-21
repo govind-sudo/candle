@@ -8,6 +8,8 @@
   <meta property="og:image" content="URL_TO_THUMBNAIL_IMAGE">
   <meta property="og:description" content="Handcrafted Soy Candles for Every Mood.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p0S2JRxNVcTPbOCqoaF4QXfEIJ93LgBZG0IOuGxFjP5Y6y1IStQZg6rRLZzK56GUM9NVY7sVRQy8UbkZlC3BAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
 
   <title>Glow & Scent Candles</title>
@@ -594,9 +596,173 @@ nav {
 
 
 
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.menu-toggle {
+  font-size: 2rem;
+  cursor: pointer;
+  display: none;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: var(--primary);
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 12px;
+    z-index: 999;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  nav a {
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+  }
+
+  nav {
+    padding: 1rem;
+  }
+}
+
+
+@media (max-width: 768px) {
+  nav {
+    width: 95vw; /* Increase nav bar width on mobile */
+    padding: 0.5rem 1rem; /* Reduce height */
+    min-height: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 12px;
+  }
+
+  .nav-container {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .menu-toggle {
+    font-size: 1.8rem;
+  }
+}
 
 
 
+  .profile-icon {
+  font-size: 1.8rem;
+  color: var(--accent);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.profile-icon i {
+  vertical-align: middle;
+}
+
+.profile-icon:hover {
+  transform: scale(1.1);
+  color: #5e443e;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .profile-icon {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+  }
+
+  .nav-container {
+    justify-content: space-between;
+  }
+}
+
+.profile-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: white;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 1000;
+  min-width: 150px;
+  animation: fadeInMenu 0.3s ease;
+}
+
+.profile-menu a {
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  color: var(--accent);
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.profile-menu a:hover {
+  background-color: #f2e6de;
+}
+
+@keyframes fadeInMenu {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile adjustment */
+@media (max-width: 768px) {
+  .profile-menu {
+    right: 10px;
+  }
+}
 
 
 
@@ -607,11 +773,32 @@ nav {
 
 
   <nav>
-    <a href="#about">About</a>
-    <a href="#products">Products</a>
-    <a href="#testimonials">Testimonials</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <div class="nav-container">
+    <div class="logo">Glow & Scent</div>
+    <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#products">Products</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+
+  <div class="profile-wrapper">
+  <div class="profile-icon" onclick="toggleProfileMenu()" aria-label="Profile">
+    <i class="fas fa-user-circle"></i>
+  </div>
+  <div class="profile-menu" id="profileMenu">
+    <a href="/profile">My Profile</a>
+    <a href="/settings">Settings</a>
+    <a href="/logout">Logout</a>
+  </div>
+</div>
+
+
+
+</nav>
+
 
   <header>
     
@@ -797,8 +984,29 @@ nav {
   });
 </script>
 
+<script>
+  function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("show");
+  }
+</script>
 
 
+<script>
+  function toggleProfileMenu() {
+    const menu = document.getElementById("profileMenu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+  }
+
+  // Optional: close menu on outside click
+  window.addEventListener("click", function (e) {
+    const profileIcon = document.querySelector(".profile-icon");
+    const profileMenu = document.getElementById("profileMenu");
+
+    if (!profileIcon.contains(e.target) && !profileMenu.contains(e.target)) {
+      profileMenu.style.display = "none";
+    }
+  });
+</script>
 
 
 </body>
